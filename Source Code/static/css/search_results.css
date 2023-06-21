@@ -1,0 +1,108 @@
+
+body {
+    background: linear-gradient(to bottom right, #282c34, #1b1e23) fixed;
+    color: #ddd;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+  
+p {
+    margin: 10px;
+}
+  
+.therapist-name {
+    font-size: 24px;
+}
+  
+.therapist-specialty {
+    font-style: italic;
+}
+  
+.results-container a {
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+  
+.results-container a:hover {
+    background-color: #0056b3;
+}
+  
+.results-container {
+    width: 35%;
+    background-color: #1b1e23;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+  
+
+footer {
+    background-color: #1b1e23;
+    color: #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 3rem;
+  }
+  
+  footer p {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+  
+  footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 17px;
+  }
+  
+  footer ul li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  
+  footer ul li a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  footer ul li a:hover {
+    color: #0056b3;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px; 
+  }
+  
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #007bff;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #0056b3; 
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }

@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/topbar.css') }}">
+    </head>
+<body>
+    <div class="topnav">
+        <button class="home-button" id="button" onclick="window.location.href='/'">Home</button> 
+        {% if 'SESSION-TOKEN' in request.cookies %} 
+            <button class="logout-button" id="button">Logout</button> 
+            <button class="profile-button" id="button" onclick="window.location.href='/profile'">Profile</button> 
+                
+        {% else %} 
+            <button class="login-button" id="button" onclick="window.location.href='/login'" >Login</button> 
+            <button class="signup-button" id="button" onclick="window.location.href='/signup'">Sign Up</button> 
+        {% endif %} 
+    </div>
+    <footer>
+        <p>&copy; 2023 Therapy Connect</p>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </footer>
+    <script>
+        const logoutButton = document.querySelector('.logout-button');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', async () => {
+                const response = await fetch('/logout', {
+                    method: 'POST',
+                })
+
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = '/'
+                }
+            })
+        }
+    </script>
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,69 @@
+{% extends "topbar.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/singup.css') }}">
+  </head>
+  <body>
+    <div class="header">
+        <h1>Sign Up</h1>
+    </div>
+    <form id = "signup-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username"><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password"><br> 
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password"><br>
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email"><br>
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone"><br>
+      <label for="full-name">Full Name:</label>
+      <input type="text" id="full-name" name="full_name"><br>
+      <input type="submit" value="Sign Up">
+    </form>
+    <p id="signup-error"></p>
+    <footer>
+      <p>&copy; 2023 Therapy Connect</p>
+      <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Contact Us</a></li>
+      </ul>
+  </footer>
+  <script>
+    const signupForm = document.getElementById("signup-form");
+    const errorElement = document.getElementById("signup-error");
+
+    signupForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      password = document.getElementById("password").value
+      confirmedPassowrd = document.getElementById("confirm-password").value
+      if (password != confirmedPassowrd) {
+        errorElement.textContent = "Password does not match"
+        return;
+      }
+      const response = await fetch("/signup", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        // if response contains an "error" in JSON, display the error
+        errorElement.textContent = data.error
+      } else {
+        // if response doesn't contain an error, redirect user to their profile page
+        window.location.href = "/profile";
+      }
+    });
+  </script>
+  </body>
+</html>
+{% endblock %}

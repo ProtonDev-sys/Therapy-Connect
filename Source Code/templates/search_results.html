@@ -1,0 +1,26 @@
+{% extends "topbar.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Therapist Booking System</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search_results.css') }}">
+  </head>
+  <body>
+    <h1>Search Results for "{{ query }}"</h1>
+    {% if therapists %}
+        {% for therapist in therapists %}
+            <div class="results-container">
+                <p class="therapist-name">{{ therapist.name }}</p>
+                <p class="therapist-specialty">{{ therapist.speciality }}</p>
+                <p class="therapist-location">{{ therapist.location }}</p>
+                <a href="/book?id={{therapist.ID}}">Book</a>
+            </div>
+        {% endfor %}
+    {% else %}
+      <p>No results found.</p>
+    {% endif %}
+  </body>
+</html>
+{% endblock %}

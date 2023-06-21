@@ -1,0 +1,24 @@
+{% extends "topbar.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <img src="{{ url_for('static', filename='img/original-pfp.png') }}" alt="Profile Picture">
+            <div class="profile-info">
+                <h1>{{ user.name }}</h1>
+                <h2>{{ user.username }}</h2>
+                <p>{{ user.speciality }}</p>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+{% endblock %}
