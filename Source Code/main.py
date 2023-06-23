@@ -6,3 +6,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# use the admin sidebar on all the pages, it looks better.
