@@ -3,4 +3,4 @@ to install required packages use:
 
 website will serve on 127.0.0.1:8080
 
-credits - https://github.com/git
+credits - https://github.com/ProtonDev-sys/Therapy-Connect
