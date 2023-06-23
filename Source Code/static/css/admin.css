@@ -1,0 +1,34 @@
+nav {
+    background-color: #111214;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 5rem;
+    width: 200px;
+    overflow-x: hidden;
+    padding-top: 20px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+nav a {
+    display: block;
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+nav a:hover {
+    background-color: #1d2025;
+}
+nav a.active {
+    background-color: #1B9CFC;
+    color: white;
+}
+
+.main {
+    top: 5rem;
+    margin-left: 200px;
+    padding: 20px;
+    height: 100%;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}

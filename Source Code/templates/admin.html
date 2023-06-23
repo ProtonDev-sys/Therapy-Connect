@@ -1,0 +1,60 @@
+{% extends "topbar.html" %}
+{% block content %}
+ <!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Panel</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+	<nav>
+		<!-- List of possible actions -->
+		<a class="active" onclick="showContent('content1', this)">User Accounts</a>
+		<a onclick="showContent('content2', this)">Action 2</a>
+		<a onclick="showContent('content3', this)">Action 3</a>
+		<a onclick="showContent('content4', this)">Action 4</a>
+	</nav>
+	<div class="main">
+		<!-- Content area for the selected action -->
+		<div id="content1">
+			<h1>Action 1 Content</h1>
+			<p>This is the content for Action 1.</p>
+		</div>
+		<div id="content2" style="display: none;">
+			<h1>Action 2 Content</h1>
+			<p>This is the content for Action 2.</p>
+		</div>
+		<div id="content3" style="display: none;">
+			<h1>Action 3 Content</h1>
+			<p>This is the content for Action 3.</p>
+		</div>
+		<div id="content4" style="display: none;">
+			<h1>Action 4 Content</h1>
+			<p>This is the content for Action 4.</p>
+		</div>
+	</div>
+	<script>
+		function showContent(contentId, button) {
+			// Hide all content areas
+			var contentAreas = document.getElementsByClassName("main")[0].children;
+			for (var i = 0; i < contentAreas.length; i++) {
+				contentAreas[i].style.display = "none";
+			}
+			// Show the selected content area
+			document.getElementById(contentId).style.display = "block";
+			// Set the clicked button to active and remove the active class from all other buttons
+			var buttons = document.getElementsByTagName("a");
+			for (var i = 0; i < buttons.length; i++) {
+				if (buttons[i] == button) {
+					buttons[i].classList.add("active");
+				} else {
+					buttons[i].classList.remove("active");
+				}
+			}
+		}
+	</script>
+</body>
+</html>
+{% endblock %}
