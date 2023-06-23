@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, make_response, jsonify, url_for
+from flask import Flask, render_template, request, redirect, make_response, jsonify, url_for, send_from_directory
 from account import Account
 from therapist import Therapist
 from database import Database
 import re 
 from utilities import is_strong_password
-
+import os
 ### todo ###
 # booking page
 # only allow booking if the date is not taken, display only available dates/times
@@ -37,9 +37,33 @@ class Website():
         self.app.add_url_rule("/signup", "SignUpPage", self.signup_get, methods=['GET'])
         self.app.add_url_rule("/signup", "AuthorizeSignup", self.signup_post, methods=['POST'])
         self.app.add_url_rule("/profile", "GetProfile", self.get_profile, methods=['GET'])
+        self.app.add_url_rule("/admin", "admin", self.admin_page, methods=['GET'])
         
+        #self.app.add_url_rule("/favicon.ico", "/favicon.ico", self.favicon, methods=['GET'])
+        
+    def favicon(self) -> None:
+        pass
+    #    return send_from_directory(os.path.join(app.root_path, 'static'),
+    #                           'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
     def index(self) -> dict:
+        session_token = request.cookies.get("SESSION-TOKEN")
+        if not session_token:
+            return redirect(url_for('Login'))
+        account = Account()
+        id = None
+        if request.args.get('username'):
+            username = request.args.get('username')
+        elif request.args.get('id'):
+            id = request.args.get('id')
+        else:
+            username = request.cookies.get("USERNAME")
+
+        account.username = request.cookies.get("USERNAME")
+        valid = account.set_session_token(session_token)
+        if not valid:
+            return redirect(url_for('Login'))
+
         return render_template('index.html')
 
     def search(self) -> dict:
@@ -154,8 +178,7 @@ class Website():
     def get_profile(self) -> dict:
         session_token = request.cookies.get("SESSION-TOKEN")
         if not session_token:
-            print("failed to get session token")
-            return jsonify({"error": "Invalid session token."})
+            return redirect(url_for('Login'))
         account = Account()
         id = None
         if request.args.get('username'):
@@ -168,8 +191,7 @@ class Website():
         account.username = request.cookies.get("USERNAME")
         valid = account.set_session_token(session_token)
         if not valid:
-            response = jsonify({"error": "Invalid session token."})
-            return response
+            return redirect(url_for('Login'))
         if not id:
             profileAccount = self.database.get_account_by_username(username)
         else:
@@ -208,6 +230,9 @@ class Website():
         
         return response
 
+    def admin_page(self) -> dict:
+        return render_template("admin.html")
+    
 if __name__ == '__main__':
     website = Website()
     website.run()
