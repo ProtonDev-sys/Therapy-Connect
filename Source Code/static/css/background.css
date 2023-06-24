@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+}
+
+body {
+    background: linear-gradient(to bottom right, #080618, #0c0827) fixed;
+    color: #ddd;
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+

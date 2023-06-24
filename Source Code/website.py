@@ -35,6 +35,8 @@ class Website():
         self.app.add_url_rule("/login", "authorizeLogin", self.login_post, methods=['POST'])
         self.app.add_url_rule("/logout", "logout", self.logout, methods=['POST'])
         self.app.add_url_rule("/signup", "SignUpPage", self.signup_get, methods=['GET'])
+        self.app.add_url_rule("/register", "register", self.signup_get, methods=['GET'])
+        
         self.app.add_url_rule("/signup", "AuthorizeSignup", self.signup_post, methods=['POST'])
         self.app.add_url_rule("/profile", "GetProfile", self.get_profile, methods=['GET'])
         self.app.add_url_rule("/admin", "admin", self.admin_page, methods=['GET'])
@@ -153,7 +155,7 @@ class Website():
 
         # Check password strength
         if not is_strong_password(password):
-            error = "Weak password, your password must be at least 8 characters, have at least 1 uppercase and lowercase character and symbols."
+            error = "Weak password, your password must be at least 8 characters, contain at least 1 uppercase and lowercase character and symbols."
 
         if not error:
             account_exists = new_account.account_exists(username, phone_number)
@@ -190,6 +192,7 @@ class Website():
 
         account.username = request.cookies.get("USERNAME")
         valid = account.set_session_token(session_token)
+        print(valid)
         if not valid:
             return redirect(url_for('Login'))
         if not id:

@@ -1,15 +1,14 @@
-{% extends "topbar.html" %}
-{% block content %}
-
+{% extends "footer.html" %}
+{% block Footercontent %}
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sign Up</title>
+    <title>Register</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/singup.css') }}">
   </head>
   <body>
     <div class="header">
-        <h1>Sign Up</h1>
+        <h1>Register</h1>
     </div>
     <form id = "signup-form">
       <label for="username">Username:</label>
@@ -25,6 +24,7 @@
       <label for="full-name">Full Name:</label>
       <input type="text" id="full-name" name="full_name"><br>
       <input type="submit" value="Sign Up">
+      <p>Already have an account? <a href="/login">Login here</a></p>
     </form>
     <p id="signup-error"></p>
     <footer>

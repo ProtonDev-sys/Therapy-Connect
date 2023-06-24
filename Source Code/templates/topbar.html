@@ -1,6 +1,11 @@
+{% extends "footer.html" %}
+{% block Footercontent %}
+
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/topbar.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/background.css') }}">
+        
     </head>
 <body>
     <div class="topnav">
@@ -14,14 +19,7 @@
             <button class="signup-button" id="button" onclick="window.location.href='/signup'">Sign Up</button> 
         {% endif %} 
     </div>
-    <footer>
-        <p>&copy; 2023 Therapy Connect</p>
-        <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Contact Us</a></li>
-        </ul>
-    </footer>
+    
     <script>
         const logoutButton = document.querySelector('.logout-button');
         if (logoutButton) {
@@ -40,3 +38,4 @@
     {% block content %}{% endblock %}
 </body>
 </html>
+{% endblock %}

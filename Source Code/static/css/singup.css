@@ -7,6 +7,21 @@
   height: 100vh;
 }
 
+@font-face {
+  font-family: 'Noto Serif';
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
+}
+
+.header h1 {
+  background-image: linear-gradient(to left, #5428bd, #1B9CFC);
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-family: 'Noto Serif', serif;
+  letter-spacing: 0.2rem;
+}
+
+
 form {
   display: flex;
   flex-direction: column;
@@ -17,6 +32,11 @@ form {
 label {
   text-align: right;
   padding-right: 1em;
+}
+
+
+a[href="/login"] {
+  color: #1B9CFC;
 }
 
 input[type="text"],

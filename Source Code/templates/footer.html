@@ -1,0 +1,15 @@
+<body>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/background.css') }}">
+    </head>
+    <footer>
+        <p>&copy; 2023 Therapy Connect</p>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </footer>
+    {% block Footercontent %}{% endblock %}
+</body>
