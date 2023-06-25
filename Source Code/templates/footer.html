@@ -1,4 +1,15 @@
 <body>
+    <style>
+        @font-face {
+            font-family: Nexa;
+            src:  url("{{url_for('static', filename='fonts/Nexa-Heavy.ttf')}}");
+          }
+          @font-face {
+            font-family: NexaLight;
+            src:  url("{{url_for('static', filename='fonts/Nexa-ExtraLight.ttf')}}");
+          }
+          
+    </style>
     <head>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/background.css') }}">

@@ -6,17 +6,19 @@
     padding: 30px;
     height: 100vh;
   }
-  @font-face {
-    font-family: 'Noto Serif';
-    src: url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
+  
+
+  .header {
+    top: 15rem;
   }
 
   .header h1 {
+    pointer-events: none;
     background-image: linear-gradient(to left, #5428bd, #1B9CFC);
     -webkit-text-fill-color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
-    font-family: 'Noto Serif', serif;
+    font-family: Nexa;
     letter-spacing: 0.2rem;
     z-index: 1;
   }
@@ -43,6 +45,11 @@
   a[href="/register"] {
     color: #1B9CFC;
   }
+
+  a[href="/register"]:hover {
+    color: #0056b3;
+  }
+  
   
   label {
     text-align: right;

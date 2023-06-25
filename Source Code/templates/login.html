@@ -9,7 +9,9 @@
     
   </head>
   <body>
-    
+    <div id ="particles-js"></div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/particles.js') }}"> </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/form-background.js') }}"> </script>
     <div class="header">
         <h1><a href = "/">Login</a></h1>
     </div>
@@ -44,9 +46,8 @@
         }
     });
   </script>
-  <div id ="particles-js"></div>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/particles.js') }}"> </script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/form-background.js') }}"> </script>
+  
+  
   
 </body>
 </html>

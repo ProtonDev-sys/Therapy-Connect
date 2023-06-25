@@ -14,10 +14,10 @@
 
 .header h1 {
   background-image: linear-gradient(to left, #5428bd, #1B9CFC);
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;+
   background-clip: text;
   -webkit-background-clip: text;
-  font-family: 'Noto Serif', serif;
+  font-family: Nexa;
   letter-spacing: 0.2rem;
 }
 
