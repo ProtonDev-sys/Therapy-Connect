@@ -6,8 +6,10 @@
   <head>
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+    
   </head>
   <body>
+    
     <div class="header">
         <h1><a href = "/">Login</a></h1>
     </div>
@@ -21,6 +23,7 @@
       <p>Don't have an account? <a href="/register">Register here</a></p>
     </form>
     <p id="login-error"></p>
+  
   <script>
     const loginForm = document.getElementById("login-form");
     const errorElement = document.getElementById("login-error");
@@ -41,6 +44,10 @@
         }
     });
   </script>
+  <div id ="particles-js"></div>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/particles.js') }}"> </script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/form-background.js') }}"> </script>
+  
 </body>
 </html>
 {% endblock %}

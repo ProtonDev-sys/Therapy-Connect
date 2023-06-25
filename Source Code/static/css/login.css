@@ -18,6 +18,16 @@
     -webkit-background-clip: text;
     font-family: 'Noto Serif', serif;
     letter-spacing: 0.2rem;
+    z-index: 1;
+  }
+
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
   }
 
   form {
@@ -25,8 +35,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 50vh; /* Set the height of the form to the full viewport height */
-    margin: 0; /* Remove any default margin */
+    height: 50vh; 
+    margin: 0; 
+    z-index: 1;
   }
 
   a[href="/register"] {
