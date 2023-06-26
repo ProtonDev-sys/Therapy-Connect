@@ -65,8 +65,9 @@ class Website():
         valid = account.set_session_token(session_token)
         if not valid:
             return redirect(url_for('Login'))
-
-        return render_template('index.html')
+        response = make_response(render_template('index.html'))
+        response.set_cookie('SESSION-TOKEN', valid)
+        return response
 
     def search(self) -> dict:
         query = request.args.get('search')

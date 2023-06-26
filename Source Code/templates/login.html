@@ -13,8 +13,9 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/particles.js') }}"> </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/form-background.js') }}"> </script>
     <div class="header">
-        <h1><a href = "/">Login</a></h1>
+        <span class ="titleText">Login</span>
     </div>
+    
     <form id = "login-form">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username"><br>
@@ -23,8 +24,9 @@
       
       <input type="submit" value="Login">
       <p>Don't have an account? <a href="/register">Register here</a></p>
+      <p id="login-error"></p>
     </form>
-    <p id="login-error"></p>
+    
   
   <script>
     const loginForm = document.getElementById("login-form");
