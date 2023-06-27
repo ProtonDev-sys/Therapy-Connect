@@ -128,6 +128,7 @@ class Website():
         return render_template('signup.html')
     
     def signup_post(self) -> dict:
+        print(request.form)
         username = request.form['username']
         email = request.form['email']
         phone_number = request.form['phone']
@@ -142,31 +143,35 @@ class Website():
             error = "Invalid username, ensure your username uses only alphanumeric characters and is between 3 and 20 characters."
 
         # Check email validity
-        if not re.match("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email):
+        if not re.match("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email) and not request.form['first-part'] and not error:
             error = "Invalid email, ensure your email address contains only alphanumeric characters and has the @xxx.xxx."
 
         # Check phone number validity
-        if not re.match("^[0-9]{10}$", phone_number):
+        if not re.match("^[0-9]{10}$", phone_number) and not request.form['first-part'] and not error:
             error = "Invalid phone number."
 
         # Check full name validity
-
-        if not re.match("^[A-Za-z ]{3,50}$", full_name):
+        if not re.match("^[A-Za-z ]{3,50}$", full_name) and not request.form['first-part'] and not error:
             error = "Invalid name, ensure you've only input alphanumeric characters, if you believe this is an issue contact support."
 
         # Check password strength
-        if not is_strong_password(password):
+        if not is_strong_password(password) and not error:
             error = "Weak password, your password must be at least 8 characters, contain at least 1 uppercase and lowercase character and symbols."
+
+        
 
         if not error:
             account_exists = new_account.account_exists(username, phone_number)
             if account_exists:
-                rror = f"Account with that {account_exists == 1 and 'username' or 'phone number'} already exists."
+                error = f"Account with that {account_exists == 1 and 'username' or 'phone number'} already exists."
 
         # All fields are valid
         if error:
             return jsonify({"error":error})
         else:
+            if request.form['first-part']:
+                response = make_response(jsonify({"success":True}))
+                return response
             new_account = Account()
             new_account.username = username
             new_account.signup(username, password, "user")

@@ -7,19 +7,48 @@
   height: 100vh;
 }
 
-@font-face {
-  font-family: 'Noto Serif';
-  src: url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
+.header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
 }
 
-.header h1 {
+.titleText {
+  pointer-events: none;
   background-image: linear-gradient(to left, #5428bd, #1B9CFC);
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
   font-family: Nexa;
   letter-spacing: 0.2rem;
+  font-size: 5rem;
+  text-align: center;
 }
+
+
+.titleText {
+  content: "";
+  top: 0;
+  left: 0;
+  background-color: #010718;
+  border-right: 2px solid #4070F4;
+  align-items: center;
+  animation: cursor 1.5s infinite;
+}
+
+@keyframes cursor {
+  from, to {
+    border-color: #4070F4;
+  }
+  35% {
+    border-color: transparent;
+  }
+
+}
+
 
 #particles-js {
   position: fixed;
@@ -30,11 +59,15 @@
   z-index: -1;
 }
 
-form {
+form, #first-fields, #additional-fields  {
   display: flex;
+  padding-top: 8rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 50vh; 
+  margin: 0; 
+  z-index: 1;
 }
 
 label {
@@ -59,6 +92,8 @@ input[type="tel"] {
   font-size: 20px;
   transition: width 0.3s ease-in-out;
 }
+
+
 
 h1 {
   font-size: 48px;

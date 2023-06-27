@@ -24,7 +24,7 @@ class Database():
                 \"ACCOUNTID\"    INTEGER,                     \
                 \"THERAPISTNAME\"    TEXT,                    \
                 \"THERAPISTSPECIALITY\"    TEXT,               \
-                \"DATE_STARTED\"    TEXT,                      \
+                \"DATE_STARTED\"    DATE,                      \
                 \"THERAPISTEMAIL\"    TEXT,                    \
                 \"PHONENUMBER\"    INTEGER,                    \
                 \"LOCATION\"    TEXT,                         \
@@ -39,7 +39,7 @@ class Database():
                 \"APPOINTMENTID\"    INTEGER UNIQUE,              \
                 \"THERAPISTID\"    INTEGER,                    \
                 \"CUSTOMERID\"    INTEGER,                    \
-                \"DATE\"    TEXT,                            \
+                \"DATE\"    DATE,                            \
                 \"PRICE\"    TEXT,                            \
                 \"PAID\"    INTEGER,                            \
                 \"NOTES\"   TEXT,                              \
