@@ -22,11 +22,11 @@ class Database():
             connection.execute("CREATE TABLE \"THERAPIST\" ( \
                 \"THERAPISTID\"    INTEGER UNIQUE,           \
                 \"ACCOUNTID\"    INTEGER,                     \
-                \"THERAPISTNAME\"    TEXT,                    \
-                \"THERAPISTSPECIALITY\"    TEXT,               \
+                \"THERAPISTNAME\"    VARCHAR(40),                    \
+                \"THERAPISTSPECIALITY\"    VARCHAR(30),               \
                 \"DATE_STARTED\"    DATE,                      \
-                \"THERAPISTEMAIL\"    TEXT,                    \
-                \"PHONENUMBER\"    INTEGER,                    \
+                \"THERAPISTEMAIL\"    VARCHAR(55),                    \
+                \"PHONENUMBER\"    VARCHAR(12),                    \
                 \"LOCATION\"    TEXT,                         \
                 PRIMARY KEY(\"THERAPISTID\" AUTOINCREMENT)             \
             );")
@@ -42,7 +42,7 @@ class Database():
                 \"DATE\"    DATE,                            \
                 \"PRICE\"    TEXT,                            \
                 \"PAID\"    INTEGER,                            \
-                \"NOTES\"   TEXT,                              \
+                \"NOTES\"   VARCHAR(50),                              \
                 PRIMARY KEY(\"APPOINTMENTID\" AUTOINCREMENT)    \
             );")
             connection.commit()
@@ -53,9 +53,9 @@ class Database():
             connection.execute("CREATE TABLE \"CUSTOMER\" ( \
                 \"CUSTOMERID\"    INTEGER UNIQUE,              \
                 \"ACCOUNTID\"    INTEGER,                    \
-                \"CUSTOMERNAME\"    TEXT,                    \
-                \"EMAIL\"    TEXT,                            \
-                \"PHONENUMBER\"    INTEGER,                            \
+                \"CUSTOMERNAME\"    VARCHAR(40),                    \
+                \"EMAIL\"    VARCHAR(55),                            \
+                \"PHONENUMBER\"    VARCHAR(12),                            \
                 PRIMARY KEY(\"CUSTOMERID\" AUTOINCREMENT)    \
             );")
             connection.commit()
@@ -65,12 +65,12 @@ class Database():
         try:
             connection.execute("CREATE TABLE \"ACCOUNT\" ( \
                 \"ACCOUNTID\"	INTEGER UNIQUE,              \
-                \"USERNAME\"	TEXT,                    \
-                \"PASSWORD\"	TEXT,                    \
+                \"USERNAME\"	VARCHAR(20),                    \
+                \"PASSWORD\"	VARCHAR(70),                    \
                 \"CREATIONDATE\"	TEXT,                        \
                 \"PERMISSIONLEVEL\"	INTEGER,                 \
                 \"ACCOUNTTYPE\"	TEXT,                    \
-                \"SESSION_TOKEN\"	TEXT,                        \
+                \"SESSION_TOKEN\"	VARCHAR(40),                        \
                 PRIMARY KEY(\"ACCOUNTID\" AUTOINCREMENT)    \
             );")
             connection.commit()
