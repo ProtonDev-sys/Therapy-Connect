@@ -40,9 +40,12 @@ class Website():
         self.app.add_url_rule("/signup", "AuthorizeSignup", self.signup_post, methods=['POST'])
         self.app.add_url_rule("/profile", "GetProfile", self.get_profile, methods=['GET'])
         self.app.add_url_rule("/admin", "admin", self.admin_page, methods=['GET'])
+        self.app.register_error_handler(404, self.handle_404)
         
         #self.app.add_url_rule("/favicon.ico", "/favicon.ico", self.favicon, methods=['GET'])
-        
+    def handle_404(self, error):
+        return make_response(render_template('404.html', error=error))
+
     def favicon(self) -> None:
         pass
     #    return send_from_directory(os.path.join(app.root_path, 'static'),
