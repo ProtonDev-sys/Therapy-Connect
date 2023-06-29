@@ -28,7 +28,7 @@ class Website():
 
     def defineUrls(self) -> None:
         self.app.add_url_rule("/", "Index", self.index, methods=['GET'])
-        # self.app.add_url_rule("/search", "Search", self.search, methods=['GET'])
+        self.app.add_url_rule("/search", "Search", self.search, methods=['GET'])
         self.app.add_url_rule("/previewSearch", "PreviewSearch",
                               self.previewSearch, methods=['GET'])
         self.app.add_url_rule("/book", "book", self.book, methods=['GET'])
@@ -80,16 +80,16 @@ class Website():
         response.set_cookie('SESSION-TOKEN', valid)
         return response
 
-    # def search(self) -> dict:
-    #    query = request.args.get('search')
-    #    if not query:
-    #        return redirect('/')
-    #    results = []
-    #    therapists = self.database.get_therapists()
-    #    for therapist in therapists:
-    #        if query.lower() in therapist['name'].lower() or query.lower() in therapist['speciality'].lower() or query.lower() in therapist['location'].lower():
-    #            results.append(therapist)
-    #    return render_template('search_results.html', query=query, therapists=results)
+    def search(self) -> dict:
+        query = request.args.get('search')
+        if not query:
+            return redirect('/')
+        results = []
+        therapists = self.database.get_therapists()
+        for therapist in therapists:
+            if query.lower() in therapist['name'].lower() or query.lower() in therapist['speciality'].lower() or query.lower() in therapist['location'].lower():
+                results.append(therapist)
+        return render_template('search_results.html', query=query, therapists=results)
 
     def previewSearch(self) -> dict:
         query = request.args.get('search')
