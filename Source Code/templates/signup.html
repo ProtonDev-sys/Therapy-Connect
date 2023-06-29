@@ -1,138 +1,154 @@
-{% extends "footer.html" %}
-{% block Footercontent %}
+{% extends "footer.html" %} {% block Footercontent %}
 <!DOCTYPE html>
 <html>
   <head>
     <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/singup.css') }}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/singup.css') }}"
+    />
   </head>
   <body>
     <div class="header">
-      <span class ="titleText">Register</span>
-  </div>
-    <form id = "signup-form">
-      <div id= "first-fields">
+      <span class="titleText">Register</span>
+    </div>
+    <form id="signup-form">
+      <div id="first-fields">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br>
+        <input type="text" id="username" name="username" /><br />
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br> 
+        <input type="password" id="password" name="password" /><br />
         <label for="confirm-password">Confirm Password:</label>
-        <input type="password" id="confirm-password" name="confirm-password"><br>
-        <input type="submit" id = "submit" value="Sign Up">
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirm-password"
+        /><br />
+        <input type="submit" id="submit" value="Sign Up" />
       </div>
-      
-      <div id = "additional-fields" style="display: none;">
+
+      <div id="additional-fields" style="display: none">
         <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email"><br>
+        <input type="email" id="email" name="email" /><br />
         <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone"><br>
+        <input type="tel" id="phone" name="phone" /><br />
         <label for="full-name">Full Name:</label>
-        <input type="text" id="full-name" name="full_name"><br>
-        <input type="submit" id = "submit2" value="Sign Up">
+        <input type="text" id="full-name" name="full_name" /><br />
+        <input type="submit" id="submit2" value="Sign Up" />
       </div>
       <p>Already have an account? <a href="/login">Login here</a></p>
       <p id="signup-error"></p>
     </form>
-    
+
     <footer>
       <p>&copy; 2023 Therapy Connect</p>
       <ul>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Contact Us</a></li>
       </ul>
-  </footer>
-  <script>
-    const signupForm = document.getElementById("signup-form");
-    const submitBtnOne = document.getElementById("submit");
-    const additionalSubmitBtn = document.getElementById("submit2");
+    </footer>
+    <script>
+      const signupForm = document.getElementById("signup-form");
+      const submitBtnOne = document.getElementById("submit");
+      const additionalSubmitBtn = document.getElementById("submit2");
 
-    const errorElement = document.getElementById("signup-error");
+      const errorElement = document.getElementById("signup-error");
 
-    submitBtnOne.addEventListener("click", async (event) => {
-      event.preventDefault();
+      submitBtnOne.addEventListener("click", async (event) => {
+        event.preventDefault();
 
-      const formData = new FormData(signupForm);
-      password = document.getElementById("password").value
-      confirmedPassowrd = document.getElementById("confirm-password").value
-      if (password != confirmedPassowrd) {
-        errorElement.textContent = "Password does not match"
-        return;
-      }
-      formData.append("first-part", true)
-      const response = await fetch("/signup", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (data.error) {
-        errorElement.textContent = data.error
-      } else {
-        document.getElementById("first-fields").style.display = "none";
-        document.getElementById("additional-fields").style.display = "";
-      }
-    });
-
-    additionalSubmitBtn.addEventListener("click", async (event) => { 
-      event.preventDefault();
-
-      const formData = new FormData(signupForm)
-      const response = await fetch("/signup", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (data.error) {
-        errorElement.textContent = data.error
-      } else {
-        window.location.href = "/profile";
-      }
-    })
-
-    
-    function typeWriter(txt, speed, i = 0) {
-        if (i < txt.length) {
-            document.getElementsByClassName("titleText")[0].textContent += txt.charAt(i);
-            i++;
-            setTimeout(() => typeWriter(txt, speed, i), speed);
+        const formData = new FormData(signupForm);
+        password = document.getElementById("password").value;
+        confirmedPassowrd = document.getElementById("confirm-password").value;
+        if (password != confirmedPassowrd) {
+          errorElement.textContent = "Password does not match";
+          return;
         }
-      
-    }
-    function typeDelete(txt, speed, i = txt.length) {
-      if (i >= 0) {
-        document.getElementsByClassName("titleText")[0].innerHTML = txt.substring(0, i);
-        i--;
-        setTimeout(() => typeDelete(txt, speed, i), speed);
-      }
-    }
-    old = ""
-    function run() {
-      var titles = ["Register", "Have a good day!", "Welcome!"]
-      var txt = titles[Math.floor(Math.random() * titles.length)];
-      typeDelete(document.getElementsByClassName("titleText")[0].textContent, 25)
+        formData.append("first-part", true);
+        const response = await fetch("/signup", {
+          method: "POST",
+          body: formData,
+        });
 
-      while (txt == old ) {
-        txt = titles[Math.floor(Math.random() * titles.length)];
-        setTimeout(() => {
-          console.log("hi")
-        }, 200);
+        const data = await response.json();
+        if (data.error) {
+          errorElement.textContent = data.error;
+        } else {
+          document.getElementById("first-fields").style.display = "none";
+          document.getElementById("additional-fields").style.display = "";
+        }
+      });
+
+      additionalSubmitBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(signupForm);
+        const response = await fetch("/signup", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (data.error) {
+          errorElement.textContent = data.error;
+        } else {
+          window.location.href = "/profile";
+        }
+      });
+
+      function typeWriter(txt, speed, i = 0) {
+        if (i < txt.length) {
+          document.getElementsByClassName("titleText")[0].textContent +=
+            txt.charAt(i);
+          i++;
+          setTimeout(() => typeWriter(txt, speed, i), speed);
+        }
       }
-      console.log(txt);
-      if (document.getElementsByClassName("titleText")[0].textContent == "") {
-        old = txt;
-        typeWriter(txt, 75)
-        setTimeout(() => run(), 10000);
-      } else {
-        setTimeout(() => run(), 500);
+      function typeDelete(txt, speed, i = txt.length) {
+        if (i >= 0) {
+          document.getElementsByClassName("titleText")[0].innerHTML =
+            txt.substring(0, i);
+          i--;
+          setTimeout(() => typeDelete(txt, speed, i), speed);
+        }
       }
-    }
-    run()
-  </script>
-    <div id ="particles-js"></div>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/particles.js') }}"> </script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/form-background.js') }}"> </script>
+      old = "";
+      function run() {
+        var titles = ["Register", "Have a good day!", "Welcome!"];
+        var txt = titles[Math.floor(Math.random() * titles.length)];
+        typeDelete(
+          document.getElementsByClassName("titleText")[0].textContent,
+          25
+        );
+
+        while (txt == old) {
+          txt = titles[Math.floor(Math.random() * titles.length)];
+          setTimeout(() => {
+            console.log("hi");
+          }, 200);
+        }
+        console.log(txt);
+        if (document.getElementsByClassName("titleText")[0].textContent == "") {
+          old = txt;
+          typeWriter(txt, 75);
+          setTimeout(() => run(), 10000);
+        } else {
+          setTimeout(() => run(), 500);
+        }
+      }
+      run();
+    </script>
+    <div id="particles-js"></div>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/particles.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/form-background.js') }}"
+    ></script>
   </body>
 </html>
 {% endblock %}

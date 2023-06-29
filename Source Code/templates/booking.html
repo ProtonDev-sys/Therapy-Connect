@@ -2,9 +2,16 @@
 <html>
   <head>
     <title>Therapist Booking System</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/booking.css') }}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/booking.css') }}"
+    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css"
+    />
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
   </head>
   <body>
@@ -13,26 +20,26 @@
       <p><i>{{ therapist.speciality }} at {{ therapist.location }}</i></p>
       <form action="/book/{{ therapist.id }}" method="POST">
         <label for="full-name">Full Name:</label>
-        <input type="text" id="full-name" name="full-name" required>
+        <input type="text" id="full-name" name="full-name" required />
         <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required />
         <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" required>
+        <input type="tel" id="phone" name="phone" required />
         <label for="date">Date of Appointment:</label>
-        <input type="text" id="datepicker" name="datepicker" required>
+        <input type="text" id="datepicker" name="datepicker" required />
         <label for="comments">Extra Comments:</label>
         <textarea id="comments" name="comments"></textarea>
         <button type="submit">Book Appointment</button>
       </form>
     </div>
     <script>
-      $( function() {
-      $( "#datepicker" ).datepicker({
-        minDate: new Date(), // Only show dates starting from today
-        maxDate: "+ w", // Only show dates up to 2 weeks from today
-        dateFormat: "dd-mm-yy hh-mm" // Format the date as day-month-year
+      $(function () {
+        $("#datepicker").datepicker({
+          minDate: new Date(), // Only show dates starting from today
+          maxDate: "+ w", // Only show dates up to 2 weeks from today
+          dateFormat: "dd-mm-yy hh-mm", // Format the date as day-month-year
+        });
       });
-    });
     </script>
     <footer>
       <p>&copy 2023 Therapy Connect</p>
@@ -44,4 +51,3 @@
     </footer>
   </body>
 </html>
-

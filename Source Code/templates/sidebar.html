@@ -5,7 +5,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='css/topbar.css') }}"
+      href="{{ url_for('static', filename='css/sidebar.css') }}"
     />
     <link
       rel="stylesheet"
@@ -14,41 +14,6 @@
     />
   </head>
   <body>
-    <div class="topnav">
-      <button
-        class="home-button"
-        id="button"
-        onclick="window.location.href='/'"
-      >
-        Home
-      </button>
-      {% if 'SESSION-TOKEN' in request.cookies %}
-      <button class="logout-button" id="button">Logout</button>
-      <button
-        class="profile-button"
-        id="button"
-        onclick="window.location.href='/profile'"
-      >
-        Profile
-      </button>
-
-      {% else %}
-      <button
-        class="login-button"
-        id="button"
-        onclick="window.location.href='/login'"
-      >
-        Login
-      </button>
-      <button
-        class="signup-button"
-        id="button"
-        onclick="window.location.href='/signup'"
-      >
-        Sign Up
-      </button>
-      {% endif %}
-    </div>
     <div id="particles-js"></div>
     <script
       type="text/javascript"
@@ -58,7 +23,6 @@
       type="text/javascript"
       src="{{ url_for('static', filename='js/form-background.js') }}"
     ></script>
-
     <script>
       const logoutButton = document.querySelector(".logout-button");
       if (logoutButton) {

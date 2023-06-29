@@ -1,11 +1,9 @@
-
 body {
-    background: linear-gradient(to bottom right, #080618, #0c0827) fixed;
-    color: #ddd;
-    font-family: NexaLight;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
+  background: linear-gradient(to bottom right, #080618, #0c0827) fixed;
+  color: #ddd;
+  font-family: NexaLight;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
-

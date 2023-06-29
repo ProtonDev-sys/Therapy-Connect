@@ -1,60 +1,385 @@
-{% extends "topbar.html" %}
-{% block content %}
- <!DOCTYPE html>
+{% extends "sidebar.html" %} {% block content %}
+<!DOCTYPE html>
 <html>
-<head>
-	<title>Admin Panel</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css') }}">
-</head>
-<body>
-	<nav>
-		<!-- List of possible actions -->
-		<a class="active" onclick="showContent('content1', this)">User Accounts</a>
-		<a onclick="showContent('content2', this)">Action 2</a>
-		<a onclick="showContent('content3', this)">Action 3</a>
-		<a onclick="showContent('content4', this)">Action 4</a>
-	</nav>
-	<div class="main">
-		<!-- Content area for the selected action -->
-		<div id="content1">
-			<h1>Action 1 Content</h1>
-			<p>This is the content for Action 1.</p>
-		</div>
-		<div id="content2" style="display: none;">
-			<h1>Action 2 Content</h1>
-			<p>This is the content for Action 2.</p>
-		</div>
-		<div id="content3" style="display: none;">
-			<h1>Action 3 Content</h1>
-			<p>This is the content for Action 3.</p>
-		</div>
-		<div id="content4" style="display: none;">
-			<h1>Action 4 Content</h1>
-			<p>This is the content for Action 4.</p>
-		</div>
-	</div>
-	<script>
-		function showContent(contentId, button) {
-			// Hide all content areas
-			var contentAreas = document.getElementsByClassName("main")[0].children;
-			for (var i = 0; i < contentAreas.length; i++) {
-				contentAreas[i].style.display = "none";
-			}
-			// Show the selected content area
-			document.getElementById(contentId).style.display = "block";
-			// Set the clicked button to active and remove the active class from all other buttons
-			var buttons = document.getElementsByTagName("a");
-			for (var i = 0; i < buttons.length; i++) {
-				if (buttons[i] == button) {
-					buttons[i].classList.add("active");
-				} else {
-					buttons[i].classList.remove("active");
-				}
-			}
-		}
-	</script>
-</body>
+  <head>
+    <title>Admin Panel</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/admin.css') }}"
+    />
+  </head>
+  <body>
+    <nav>
+      <a class="active" onclick="showContent('content1', this)"
+        >User Accounts</a
+      >
+      <a onclick="showContent('content2', this)">Action 2</a>
+      <a onclick="showContent('content3', this)">Action 3</a>
+      <a onclick="showContent('content4', this)">Action 4</a>
+      <a class="logout" onclick="logout()">Logout</a>
+    </nav>
+    <div class="main">
+      <div id="content1">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search..."
+          onkeyup="searchDatabase()"
+        />
+        <table id="databaseTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Creation Date</th>
+              <th>Permission Level</th>
+              <th>Account Type</th>
+              <th>Session Token</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Database records will be dynamically added here -->
+          </tbody>
+        </table>
+        <div id="pagination">
+          <button onclick="previousPage()">Previous</button>
+          <span id="currentPage">1</span>
+          <button onclick="nextPage()">Next</button>
+        </div>
+        <button onclick="showAddForm()">Add New Record</button>
+        <div id="addForm" style="display: none">
+          <h3>Add New Record</h3>
+          <input type="text" id="usernameInput" placeholder="Username" />
+          <input type="password" id="passwordInput" placeholder="Password" />
+          <input
+            type="date"
+            id="creationDateInput"
+            placeholder="Creation Date"
+          />
+          <input
+            type="number"
+            id="permissionLevelInput"
+            placeholder="Permission Level"
+          />
+          <input type="text" id="accountTypeInput" placeholder="Account Type" />
+          <input
+            type="text"
+            id="sessionTokenInput"
+            placeholder="Session Token"
+          />
+          <button id="addButton" onclick="addRecord()">Add</button>
+          <button onclick="cancelAdd()">Cancel</button>
+        </div>
+      </div>
+      <div id="content2" style="display: none">
+        <h1>Action 2 Content</h1>
+        <p>This is the content for Action 2.</p>
+      </div>
+      <div id="content3" style="display: none">
+        <h1>Action 3 Content</h1>
+        <p>This is the content for Action 3.</p>
+      </div>
+      <div id="content4" style="display: none">
+        <h1>Action 4 Content</h1>
+        <p>This is the content for Action 4.</p>
+      </div>
+    </div>
+    <script>
+      function showContent(contentId, button) {
+        var contentAreas = document.getElementsByClassName("main")[0].children;
+        for (var i = 0; i < contentAreas.length; i++) {
+          contentAreas[i].style.display = "none";
+        }
+        document.getElementById(contentId).style.display = "block";
+        var buttons = document.getElementsByTagName("a");
+        for (var i = 0; i < buttons.length; i++) {
+          if (buttons[i] == button) {
+            buttons[i].classList.add("active");
+          } else {
+            buttons[i].classList.remove("active");
+          }
+        }
+      }
+      function logout() {
+        fetch("/logout", {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Logged out successfully!");
+              window.location.href = "/";
+            }
+          });
+      }
+
+      var database = [
+        {
+          accountId: 1,
+          username: "John Doe",
+          password: "password1",
+          creationDate: "2020-01-01",
+          permissionLevel: 1,
+          accountType: "Admin",
+          sessionToken: "token1",
+        },
+        {
+          accountId: 2,
+          username: "Jane Smith",
+          password: "password2",
+          creationDate: "2020-02-02",
+          permissionLevel: 2,
+          accountType: "User",
+          sessionToken: "token2",
+        },
+        {
+          accountId: 3,
+          username: "Bob Johnson",
+          password: "password3",
+          creationDate: "2020-03-03",
+          permissionLevel: 3,
+          accountType: "User",
+          sessionToken: "token3",
+        },
+      ];
+
+      var currentPage = 1;
+      var recordsPerPage = 10;
+
+      function searchDatabase() {
+        var searchInput = document.getElementById("searchInput");
+        var searchTerm = searchInput.value.toLowerCase();
+
+        var filteredDatabase = database.filter(function (record) {
+          return (
+            record.username.toLowerCase().includes(searchTerm) ||
+            record.accountType.toLowerCase().includes(searchTerm) ||
+            record.sessionToken.toLowerCase().includes(searchTerm)
+          );
+          // Add any other fields you want to search by
+        });
+
+        displayDatabase(filteredDatabase);
+      }
+
+      function displayDatabase(databaseToDisplay) {
+        if (!databaseToDisplay) {
+          databaseToDisplay = database;
+        }
+
+        var tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = "";
+
+        var startIndex = (currentPage - 1) * recordsPerPage;
+        var endIndex = startIndex + recordsPerPage;
+        var currentRecords = databaseToDisplay.slice(startIndex, endIndex);
+
+        for (var i = 0; i < currentRecords.length; i++) {
+          var record = currentRecords[i];
+
+          var row = document.createElement("tr");
+          row.innerHTML = ` 
+      <td>${record.accountId}</td> 
+      <td>${record.username}</td> 
+      <td>${record.password}</td> 
+      <td>${record.creationDate}</td> 
+      <td>${record.permissionLevel}</td> 
+      <td>${record.accountType}</td> 
+      <td>${record.sessionToken}</td> 
+      <td> 
+        <button onclick="editRecord(${record.accountId})">Edit</button> 
+        <button onclick="deleteRecord(${record.accountId})">Delete</button> 
+      </td> 
+    `;
+
+          tableBody.appendChild(row);
+        }
+
+        updatePagination();
+      }
+
+      function updatePagination() {
+        var currentPageElement = document.getElementById("currentPage");
+        currentPageElement.textContent = currentPage;
+      }
+
+      function previousPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          displayDatabase();
+        }
+      }
+
+      function nextPage() {
+        var totalPages = Math.ceil(database.length / recordsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          displayDatabase();
+        }
+      }
+
+      function addRecord() {
+        var usernameInput = document.getElementById("usernameInput");
+        var passwordInput = document.getElementById("passwordInput");
+        // Add inputs for the new fields
+        var creationDateInput = document.getElementById("creationDateInput");
+        var permissionLevelInput = document.getElementById(
+          "permissionLevelInput"
+        );
+        var accountTypeInput = document.getElementById("accountTypeInput");
+        var sessionTokenInput = document.getElementById("sessionTokenInput");
+
+        if (
+          usernameInput.value === "" ||
+          passwordInput.value === "" ||
+          creationDateInput.value === "" ||
+          permissionLevelInput.value === "" ||
+          accountTypeInput.value === "" ||
+          sessionTokenInput.value === ""
+        ) {
+          alert("Fill in all the fields!");
+          return;
+        }
+
+        var newRecord = {
+          accountId: database.length + 1, // Generate a new unique ID
+          username: usernameInput.value,
+          password: passwordInput.value,
+          creationDate: creationDateInput.value,
+          permissionLevel: permissionLevelInput.value,
+          accountType: accountTypeInput.value,
+          sessionToken: sessionTokenInput.value,
+        };
+
+        database.push(newRecord);
+        usernameInput.value = "";
+        passwordInput.value = "";
+        creationDateInput.value = "";
+        permissionLevelInput.value = "";
+        accountTypeInput.value = "";
+        sessionTokenInput.value = "";
+
+        displayDatabase();
+      }
+
+      function showAddForm() {
+        var addForm = document.getElementById("addForm");
+        addForm.style.display = "";
+      }
+
+      function deleteRecord(accountId) {
+        var index = database.findIndex(function (record) {
+          return record.accountId === accountId;
+        });
+
+        if (index !== -1) {
+          database.splice(index, 1);
+          displayDatabase();
+        }
+      }
+
+      function editRecord(accountId) {
+        var record = database.find(function (record) {
+          return record.accountId === accountId;
+        });
+        if (record) {
+          // Update the inputs for the new fields
+          var usernameInput = document.getElementById("usernameInput");
+          var passwordInput = document.getElementById("passwordInput");
+          var creationDateInput = document.getElementById("creationDateInput");
+          var permissionLevelInput = document.getElementById(
+            "permissionLevelInput"
+          );
+          var accountTypeInput = document.getElementById("accountTypeInput");
+          var sessionTokenInput = document.getElementById("sessionTokenInput");
+
+          usernameInput.value = record.username;
+          passwordInput.value = record.password;
+          creationDateInput.value = record.creationDate;
+          permissionLevelInput.value = record.permissionLevel;
+          accountTypeInput.value = record.accountType;
+          sessionTokenInput.value = record.sessionToken;
+
+          // Update the add button to an update button
+          var addButton = document.getElementById("addButton");
+          addButton.innerHTML = "Update";
+          addButton.onclick = function () {
+            updateRecord(accountId);
+          };
+        }
+      }
+
+      function updateRecord(accountId) {
+        var record = database.find(function (record) {
+          return record.accountId === accountId;
+        });
+
+        if (record) {
+          var usernameInput = document.getElementById("usernameInput");
+          var passwordInput = document.getElementById("passwordInput");
+          var creationDateInput = document.getElementById("creationDateInput");
+          var permissionLevelInput = document.getElementById(
+            "permissionLevelInput"
+          );
+          var accountTypeInput = document.getElementById("accountTypeInput");
+          var sessionTokenInput = document.getElementById("sessionTokenInput");
+
+          record.username = usernameInput.value;
+          record.password = passwordInput.value;
+          record.creationDate = creationDateInput.value;
+          record.permissionLevel = permissionLevelInput.value;
+          record.accountType = accountTypeInput.value;
+          record.sessionToken = sessionTokenInput.value;
+
+          displayDatabase();
+
+          // Reset the form and button
+          usernameInput.value = "";
+          passwordInput.value = "";
+          creationDateInput.value = "";
+          permissionLevelInput.value = "";
+          accountTypeInput.value = "";
+          sessionTokenInput.value = "";
+
+          var addButton = document.getElementById("addButton");
+          addButton.innerHTML = "Add";
+          addButton.onclick = addRecord;
+        }
+      }
+
+      function cancelAdd() {
+        var usernameInput = document.getElementById("usernameInput");
+        var passwordInput = document.getElementById("passwordInput");
+        var creationDateInput = document.getElementById("creationDateInput");
+        var permissionLevelInput = document.getElementById(
+          "permissionLevelInput"
+        );
+        var accountTypeInput = document.getElementById("accountTypeInput");
+        var sessionTokenInput = document.getElementById("sessionTokenInput");
+
+        usernameInput.value = "";
+        passwordInput.value = "";
+        creationDateInput.value = "";
+        permissionLevelInput.value = "";
+        accountTypeInput.value = "";
+        sessionTokenInput.value = "";
+
+        var addButton = document.getElementById("addButton");
+        addButton.innerHTML = "Add";
+        addButton.onclick = addRecord;
+
+        var addForm = document.getElementById("addForm");
+        addForm.style.display = "none";
+      }
+
+      // Initial display of the database
+      displayDatabase();
+    </script>
+  </body>
 </html>
 {% endblock %}

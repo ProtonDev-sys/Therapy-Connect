@@ -1,21 +1,23 @@
 @font-face {
-  font-family: 'Roboto Mono';
-  src: url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+  font-family: "Roboto Mono";
+  src: url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
 }
 
 body {
   background: linear-gradient(to bottom right, #282c34, #1b1e23) fixed;
   color: #ddd;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
 }
 
-
-.login-button, .signup-button, .logout-button, .profile-button {
-  background-color: #1B9CFC;
+.login-button,
+.signup-button,
+.logout-button,
+.profile-button {
+  background-color: #1b9cfc;
   padding: 6px 12px;
   margin: 8px 0;
   font-size: 16px;
@@ -31,9 +33,9 @@ body {
   margin-left: 5;
   margin-right: 5;
 }
-  
+
 .home-button {
-  background-color: #1B9CFC;
+  background-color: #1b9cfc;
   padding: 6px 12px;
   margin: 8px 0;
   font-size: 16px;
@@ -58,4 +60,11 @@ body {
   z-index: 1000;
 }
 
-
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}

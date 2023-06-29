@@ -1,4 +1,3 @@
-
 .container {
   display: flex;
   flex-direction: column;
@@ -18,7 +17,7 @@
 
 .titleText {
   pointer-events: none;
-  background-image: linear-gradient(to left, #5428bd, #1B9CFC);
+  background-image: linear-gradient(to left, #5428bd, #1b9cfc);
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
@@ -28,27 +27,25 @@
   text-align: center;
 }
 
-
 .titleText {
   content: "";
   top: 0;
   left: 0;
   background-color: #010718;
-  border-right: 2px solid #4070F4;
+  border-right: 2px solid #4070f4;
   align-items: center;
   animation: cursor 1.5s infinite;
 }
 
 @keyframes cursor {
-  from, to {
-    border-color: #4070F4;
+  from,
+  to {
+    border-color: #4070f4;
   }
   35% {
     border-color: transparent;
   }
-
 }
-
 
 #particles-js {
   position: fixed;
@@ -66,19 +63,18 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh; 
-  margin: 0; 
+  height: 50vh;
+  margin: 0;
   z-index: 1;
 }
 
 a[href="/register"] {
-  color: #1B9CFC;
+  color: #1b9cfc;
 }
 
 a[href="/register"]:hover {
   color: #0056b3;
 }
-
 
 label {
   text-align: right;
@@ -123,7 +119,6 @@ input {
   transition-timing-function: ease-in-out;
   width: 100%;
   box-sizing: border-box;
-
 }
 
 input:focus {
@@ -134,7 +129,6 @@ input[type="submit"]:hover {
   background-color: #0056b3;
   transform: scale(1.1);
 }
-
 
 #login-error {
   color: red;

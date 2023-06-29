@@ -1,94 +1,102 @@
-{% extends "footer.html" %}
-{% block Footercontent %}
+{% extends "footer.html" %} {% block Footercontent %}
 
 <!DOCTYPE html>
 <html>
   <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
-    
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
   </head>
   <body>
-    <div id ="particles-js"></div>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/particles.js') }}"> </script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/form-background.js') }}"> </script>
+    <div id="particles-js"></div>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/particles.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/form-background.js') }}"
+    ></script>
     <div class="header">
-        <span class ="titleText"></span>
+      <span class="titleText"></span>
     </div>
-    
-    <form id = "login-form">
+
+    <form id="login-form">
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username"><br>
+      <input type="text" id="username" name="username" /><br />
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password"><br>
-      
-      <input type="submit" value="Login">
+      <input type="password" id="password" name="password" /><br />
+
+      <input type="submit" value="Login" />
       <p>Don't have an account? <a href="/register">Register here</a></p>
       <p id="login-error"></p>
     </form>
-    
-  
-  <script>
-    const loginForm = document.getElementById("login-form");
-    const errorElement = document.getElementById("login-error");
 
-    loginForm.addEventListener("submit", async (event) => {
+    <script>
+      const loginForm = document.getElementById("login-form");
+      const errorElement = document.getElementById("login-error");
+
+      loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const response = await fetch("/login", {
-            method: "POST",
-            body: formData,
+          method: "POST",
+          body: formData,
         });
 
         const data = await response.json();
         if (data.ERROR) {
-            errorElement.textContent = data.ERROR
+          errorElement.textContent = data.ERROR;
         } else {
-            window.location.href = "/profile";
+          window.location.href = "/profile";
         }
-    });
+      });
 
-    function typeWriter(txt, speed, i = 0) {
+      function typeWriter(txt, speed, i = 0) {
         if (i < txt.length) {
-            document.getElementsByClassName("titleText")[0].textContent += txt.charAt(i);
-            i++;
-            setTimeout(() => typeWriter(txt, speed, i), speed);
+          document.getElementsByClassName("titleText")[0].textContent +=
+            txt.charAt(i);
+          i++;
+          setTimeout(() => typeWriter(txt, speed, i), speed);
         }
-      
-    }
-    function typeDelete(txt, speed, i = txt.length) {
-      if (i >= 0) {
-        document.getElementsByClassName("titleText")[0].innerHTML = txt.substring(0, i);
-        i--;
-        setTimeout(() => typeDelete(txt, speed, i), speed);
       }
-    }
-    old = "Login"
-    function run() {
-      var titles = ["Login", "Have a good day!", "Welcome back!"]
-      var txt = titles[Math.floor(Math.random() * titles.length)];
-      typeDelete(document.getElementsByClassName("titleText")[0].textContent, 25)
+      function typeDelete(txt, speed, i = txt.length) {
+        if (i >= 0) {
+          document.getElementsByClassName("titleText")[0].innerHTML =
+            txt.substring(0, i);
+          i--;
+          setTimeout(() => typeDelete(txt, speed, i), speed);
+        }
+      }
+      old = "Login";
+      function run() {
+        var titles = ["Login", "Have a good day!", "Welcome back!"];
+        var txt = titles[Math.floor(Math.random() * titles.length)];
+        typeDelete(
+          document.getElementsByClassName("titleText")[0].textContent,
+          25
+        );
 
-      while (txt == old ) {
-        txt = titles[Math.floor(Math.random() * titles.length)];
-        setTimeout(() => {
-          console.log("hi")
-        }, 200);
+        while (txt == old) {
+          txt = titles[Math.floor(Math.random() * titles.length)];
+          setTimeout(() => {
+            console.log("hi");
+          }, 200);
+        }
+        console.log(txt);
+        if (document.getElementsByClassName("titleText")[0].textContent == "") {
+          old = txt;
+          typeWriter(txt, 75);
+          setTimeout(() => run(), 10000);
+        } else {
+          setTimeout(() => run(), 500);
+        }
       }
-      console.log(txt);
-      if (document.getElementsByClassName("titleText")[0].textContent == "") {
-        old = txt;
-        typeWriter(txt, 75)
-        setTimeout(() => run(), 10000);
-      } else {
-        setTimeout(() => run(), 500);
-      }
-    }
-    run()
-  </script>
-  
-  
-  
-</body>
+      run();
+    </script>
+  </body>
 </html>
 {% endblock %}

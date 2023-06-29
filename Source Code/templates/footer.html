@@ -1,26 +1,33 @@
 <body>
-    <style>
-        @font-face {
-            font-family: Nexa;
-            src:  url("{{url_for('static', filename='fonts/Nexa-Heavy.ttf')}}");
-          }
-          @font-face {
-            font-family: NexaLight;
-            src:  url("{{url_for('static', filename='fonts/Nexa-ExtraLight.ttf')}}");
-          }
-          
-    </style>
-    <head>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/background.css') }}">
-    </head>
-    <footer>
-        <p>&copy; 2023 Therapy Connect</p>
-        <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Contact Us</a></li>
-        </ul>
-    </footer>
-    {% block Footercontent %}{% endblock %}
+  <style>
+    @font-face {
+      font-family: Nexa;
+      src: url("{{url_for('static', filename='fonts/Nexa-Heavy.ttf')}}");
+    }
+    @font-face {
+      font-family: NexaLight;
+      src: url("{{url_for('static', filename='fonts/Nexa-ExtraLight.ttf')}}");
+    }
+  </style>
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/footer.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/background.css') }}"
+    />
+  </head>
+  <footer>
+    <p>&copy; 2023 Therapy Connect</p>
+    <ul>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Contact Us</a></li>
+    </ul>
+  </footer>
+  {% block Footercontent %}{% endblock %}
 </body>

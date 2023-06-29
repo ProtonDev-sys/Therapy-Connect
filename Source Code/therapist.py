@@ -1,15 +1,17 @@
-from datetime import date 
+from datetime import date
 import sqlite3
 
+
 class Therapist():
-    def __init__(self, id:int) -> None:
+    def __init__(self, id: int) -> None:
         connection = sqlite3.connect("database.db")
-        cursor = connection.execute(f"SELECT * from THERAPIST where THERAPISTID = {id}")
+        cursor = connection.execute(
+            f"SELECT * from THERAPIST where THERAPISTID = {id}")
         therapist = cursor.fetchone()
         connection.close()
         if therapist is None:
             print("Therapist ID not found.")
-            return 
+            return
         self.ID = therapist[0]
         self.ACCOUNTID = therapist[1]
         self.name = therapist[2]

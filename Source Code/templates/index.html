@@ -1,61 +1,67 @@
-{% extends "topbar.html" %}
-{% block content %}
+{% extends "topbar.html" %} {% block content %}
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Therapy Connect</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index_style.css') }}">
-    </head>
-    <body class="container">
-        <div class="header">
-            <h1>Therapy Connect</h1>
-        </div>
-        
-        <form action="/search" id="search-form" method="GET">
-            <label for="search">Search:</label>
-            <input type="text" id="search" name="search"><br><br>
-            <input type="submit" value="View All Results">
-        </form>
-        <div id="search-preview"></div>
+  <head>
+    <title>Therapy Connect</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/index_style.css') }}"
+    />
+  </head>
+  <body class="container">
+    <div class="header">
+      <h1>Therapy Connect</h1>
+    </div>
 
-    </body>
-    <script>
-        const searchInput = document.getElementById("search")
-        const searchPreview = document.getElementById('search-preview')
-        const searchForm = document.getElementById('search-form')
-        document.addEventListener("keydown", function(event) {
-            if (document.activeElement !== searchInput && event.keyCode !== 9) {
-                searchInput.focus()
-            }
-        })
-        searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value.trim()
-            if (searchTerm) {
-                fetch(`/previewSearch?search=${searchTerm}`)
-                    .then(response => response.json())
-                    .then(results => {
-                        console.log(results)
-                        const previewHTML = results.map(result => `
+    <form action="/search" id="search-form" method="GET">
+      <label for="search">Search:</label>
+      <input type="text" id="search" name="search" /><br /><br />
+      <input type="submit" value="View All Results" />
+    </form>
+    <div id="search-preview"></div>
+  </body>
+  <script>
+    const searchInput = document.getElementById("search");
+    const searchPreview = document.getElementById("search-preview");
+    const searchForm = document.getElementById("search-form");
+    document.addEventListener("keydown", function (event) {
+      if (document.activeElement !== searchInput && event.keyCode !== 9) {
+        searchInput.focus();
+      }
+    });
+    searchInput.addEventListener("input", () => {
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        fetch(`/previewSearch?search=${searchTerm}`)
+          .then((response) => response.json())
+          .then((results) => {
+            console.log(results);
+            const previewHTML = results
+              .map(
+                (result) => `
                             <div class="search-preview-item" onclick="window.location='/profile?&id=${result.ACCOUNTID}'">
                                 <h3>${result.name}</h3>
                                 <p id="bigger">${result.speciality}</p>
                             </div>
-                        `).join('')
-                        searchPreview.innerHTML = previewHTML
-                    })
-                    .catch(error => console.error(error))
-            } else {
-                searchPreview.innerHTML = ''
-            }
-        })
-        searchForm.addEventListener('submit', (event) => {
-            event.preventDefault()
-            const searchTerm = searchInput.value.trim()
-            if (searchTerm) {
-                window.location.href = `/search?search=${searchTerm}`
-            }
-        });
-    </script>
+                        `
+              )
+              .join("");
+            searchPreview.innerHTML = previewHTML;
+          })
+          .catch((error) => console.error(error));
+      } else {
+        searchPreview.innerHTML = "";
+      }
+    });
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        window.location.href = `/search?search=${searchTerm}`;
+      }
+    });
+  </script>
 </html>
 {% endblock %}
