@@ -10,6 +10,10 @@
       type="text/css"
       href="{{ url_for('static', filename='css/admin.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+    />
   </head>
   <body>
     <nav>
@@ -75,6 +79,33 @@
           <button id="addButton" onclick="addRecord()">Add</button>
           <button onclick="cancelAdd()">Cancel</button>
         </div>
+      </div>
+      <div id="editForm" style="display: none">
+        <h3>Edit Record</h3>
+        <input type="text" id="editUsernameInput" placeholder="Username" />
+        <input type="password" id="editPasswordInput" placeholder="Password" />
+        <input
+          type="date"
+          id="editCreationDateInput"
+          placeholder="Creation Date"
+        />
+        <input
+          type="number"
+          id="editPermissionLevelInput"
+          placeholder="Permission Level"
+        />
+        <input
+          type="text"
+          id="editAccountTypeInput"
+          placeholder="Account Type"
+        />
+        <input
+          type="text"
+          id="editSessionTokenInput"
+          placeholder="Session Token"
+        />
+        <button id="updateButton">Update</button>
+        <button onclick="cancelEdit()">Cancel</button>
       </div>
       <div id="content2" style="display: none">
         <h1>Action 2 Content</h1>
@@ -192,8 +223,10 @@
       <td>${record.accountType}</td> 
       <td>${record.sessionToken}</td> 
       <td> 
-        <button onclick="editRecord(${record.accountId})">Edit</button> 
-        <button onclick="deleteRecord(${record.accountId})">Delete</button> 
+        <div class="w3-container">
+          <button onclick="editRecord(${record.accountId})">Edit</button> 
+          <p><button onclick="deleteRecord(${record.accountId})" class="w3-btn w3-orange w3-xlarge"><i class="w3-margin-left glyphicon glyphicon-trash"></i></button></p>
+        </div>
       </td> 
     `;
 
@@ -288,47 +321,65 @@
           return record.accountId === accountId;
         });
         if (record) {
-          // Update the inputs for the new fields
-          var usernameInput = document.getElementById("usernameInput");
-          var passwordInput = document.getElementById("passwordInput");
-          var creationDateInput = document.getElementById("creationDateInput");
-          var permissionLevelInput = document.getElementById(
-            "permissionLevelInput"
+          var editUsernameInput = document.getElementById("editUsernameInput");
+          var editPasswordInput = document.getElementById("editPasswordInput");
+          var editCreationDateInput = document.getElementById(
+            "editCreationDateInput"
           );
-          var accountTypeInput = document.getElementById("accountTypeInput");
-          var sessionTokenInput = document.getElementById("sessionTokenInput");
+          var editPermissionLevelInput = document.getElementById(
+            "editPermissionLevelInput"
+          );
+          var editAccountTypeInput = document.getElementById(
+            "editAccountTypeInput"
+          );
+          var editSessionTokenInput = document.getElementById(
+            "editSessionTokenInput"
+          );
 
-          usernameInput.value = record.username;
-          passwordInput.value = record.password;
-          creationDateInput.value = record.creationDate;
-          permissionLevelInput.value = record.permissionLevel;
-          accountTypeInput.value = record.accountType;
-          sessionTokenInput.value = record.sessionToken;
+          editUsernameInput.value = record.username;
+          editPasswordInput.value = record.password;
+          editCreationDateInput.value = record.creationDate;
+          editPermissionLevelInput.value = record.permissionLevel;
+          editAccountTypeInput.value = record.accountType;
+          editSessionTokenInput.value = record.sessionToken;
 
-          // Update the add button to an update button
-          var addButton = document.getElementById("addButton");
-          addButton.innerHTML = "Update";
-          addButton.onclick = function () {
+          var editForm = document.getElementById("editForm");
+          editForm.style.display = "";
+
+          var updateButton = document.getElementById("updateButton");
+          updateButton.onclick = function () {
+            console.log("yes");
+            var editForm = document.getElementById("editForm");
+            editForm.style.display = "none";
             updateRecord(accountId);
           };
         }
       }
-
+      function cancelEdit() {
+        var editForm = document.getElementById("editForm");
+        editForm.style.display = "none";
+      }
       function updateRecord(accountId) {
         var record = database.find(function (record) {
           return record.accountId === accountId;
         });
 
         if (record) {
-          var usernameInput = document.getElementById("usernameInput");
-          var passwordInput = document.getElementById("passwordInput");
-          var creationDateInput = document.getElementById("creationDateInput");
-          var permissionLevelInput = document.getElementById(
-            "permissionLevelInput"
+          var usernameInput = document.getElementById("editUsernameInput");
+          var passwordInput = document.getElementById("editPasswordInput");
+          var creationDateInput = document.getElementById(
+            "editCreationDateInput"
           );
-          var accountTypeInput = document.getElementById("accountTypeInput");
-          var sessionTokenInput = document.getElementById("sessionTokenInput");
-
+          var permissionLevelInput = document.getElementById(
+            "editPermissionLevelInput"
+          );
+          var accountTypeInput = document.getElementById(
+            "editAccountTypeInput"
+          );
+          var sessionTokenInput = document.getElementById(
+            "editSessionTokenInput"
+          );
+          console.log(usernameInput.value);
           record.username = usernameInput.value;
           record.password = passwordInput.value;
           record.creationDate = creationDateInput.value;

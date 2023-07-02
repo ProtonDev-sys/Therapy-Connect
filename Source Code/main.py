@@ -1,5 +1,9 @@
+from os import system
+from time import sleep
+system("python -m pip install -r requirements.txt")
+print("If you seen an error under this message, restart the application.")
+sleep(.75)
 from website import Website
-
 
 def main() -> None:
     website = Website()
