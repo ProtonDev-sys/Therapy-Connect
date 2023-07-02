@@ -212,8 +212,25 @@
 
         for (var i = 0; i < currentRecords.length; i++) {
           var record = currentRecords[i];
-
+          var cell = document.createElement("td");
+          cell.textContent = record.username;
           var row = document.createElement("tr");
+          cell.addEventListener("click", function() {
+            var input = document.createElement("input");
+            input.type = "text";
+            input.value = this.textContent;
+            this.textContent = "";
+            this.appendChild(input);
+            input.focus();
+            input.addEventListener("blur", function() {
+              this.parentNode.textContent = this.value;
+              record.username = this.value;
+              // You would also need to add code here to save the updated record to your database
+            });
+          }); // this currently only adds username, modify to do everything 
+          row.appendChild(cell);
+          
+            // idk if this is needed rn 
           row.innerHTML = ` 
       <td>${record.accountId}</td> 
       <td>${record.username}</td> 
@@ -229,6 +246,9 @@
         </div>
       </td> 
     `;
+
+          
+
 
           tableBody.appendChild(row);
         }
