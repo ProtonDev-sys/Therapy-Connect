@@ -66,3 +66,100 @@ nav a.active {
 #addForm {
   margin-top: 20px;
 }
+
+
+#databaseTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+
+#databaseTable thead tr {
+  background-color: #333;
+  color: #fff;
+}
+
+#databaseTable th, #databaseTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  color: #fff;
+}
+
+#databaseTable {
+  background-color: #000000;
+  opacity: 0.9;
+}
+
+
+#databaseTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+#pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+#addForm, #editForm {
+  margin-top: 15px;
+  background-color: #10082e;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+#addForm input, #editForm input, select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+}
+
+#addForm button, #editForm button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#trash {
+  color: red;
+  background-color: transparent;
+}
+#save {
+  color: green;
+  background-color: transparent;
+}
+
+#addForm button:hover, #editForm button:hover {
+  background-color: #1b9cfc;
+}
+#addForm h3 {
+  color: #c6c6c6
+}
+.permissionLevelInput {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

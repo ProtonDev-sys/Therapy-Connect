@@ -60,22 +60,13 @@
           <h3>Add New Record</h3>
           <input type="text" id="usernameInput" placeholder="Username" />
           <input type="password" id="passwordInput" placeholder="Password" />
-          <input
-            type="date"
-            id="creationDateInput"
-            placeholder="Creation Date"
-          />
-          <input
-            type="number"
-            id="permissionLevelInput"
-            placeholder="Permission Level"
-          />
+          <select id="permissionLevelInput">
+            <option value="None">Select Permission Level</option>
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+          </select>
           <input type="text" id="accountTypeInput" placeholder="Account Type" />
-          <input
-            type="text"
-            id="sessionTokenInput"
-            placeholder="Session Token"
-          />
           <button id="addButton" onclick="addRecord()">Add</button>
           <button onclick="cancelAdd()">Cancel</button>
         </div>
@@ -148,39 +139,19 @@
             }
           });
       }
-
-      var database = [
-        {
-          accountId: 1,
-          username: "John Doe",
-          password: "password1",
-          creationDate: "2020-01-01",
-          permissionLevel: 1,
-          accountType: "Admin",
-          sessionToken: "token1",
-        },
-        {
-          accountId: 2,
-          username: "Jane Smith",
-          password: "password2",
-          creationDate: "2020-02-02",
-          permissionLevel: 2,
-          accountType: "User",
-          sessionToken: "token2",
-        },
-        {
-          accountId: 3,
-          username: "Bob Johnson",
-          password: "password3",
-          creationDate: "2020-03-03",
-          permissionLevel: 3,
-          accountType: "User",
-          sessionToken: "token3",
-        },
-      ];
-
+      var database;
       var currentPage = 1;
-      var recordsPerPage = 10;
+      var recordsPerPage = 8;
+      fetch('/get_database')
+        .then(response => response.json())
+        .then(data => {
+          database = data;
+          displayDatabase();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      
 
       function searchDatabase() {
         var searchInput = document.getElementById("searchInput");
@@ -188,9 +159,9 @@
 
         var filteredDatabase = database.filter(function (record) {
           return (
-            record.username.toLowerCase().includes(searchTerm) ||
-            record.accountType.toLowerCase().includes(searchTerm) ||
-            record.sessionToken.toLowerCase().includes(searchTerm)
+            record[1].toLowerCase().includes(searchTerm) ||
+            record[5].toLowerCase().includes(searchTerm) ||
+            record[6].toLowerCase().includes(searchTerm)
           );
           // Add any other fields you want to search by
         });
@@ -202,7 +173,7 @@
         if (!databaseToDisplay) {
           databaseToDisplay = database;
         }
-
+        console.log(databaseToDisplay)
         var tableBody = document.getElementById("tableBody");
         tableBody.innerHTML = "";
 
@@ -212,49 +183,74 @@
 
         for (var i = 0; i < currentRecords.length; i++) {
           var record = currentRecords[i];
-          var cell = document.createElement("td");
-          cell.textContent = record.username;
+
           var row = document.createElement("tr");
-          cell.addEventListener("click", function() {
-            var input = document.createElement("input");
-            input.type = "text";
-            input.value = this.textContent;
-            this.textContent = "";
-            this.appendChild(input);
-            input.focus();
-            input.addEventListener("blur", function() {
-              this.parentNode.textContent = this.value;
-              record.username = this.value;
-              // You would also need to add code here to save the updated record to your database
-            });
-          }); // this currently only adds username, modify to do everything 
-          row.appendChild(cell);
-          
-            // idk if this is needed rn 
+          row.id = `${record[0]}`
           row.innerHTML = ` 
-      <td>${record.accountId}</td> 
-      <td>${record.username}</td> 
-      <td>${record.password}</td> 
-      <td>${record.creationDate}</td> 
-      <td>${record.permissionLevel}</td> 
-      <td>${record.accountType}</td> 
-      <td>${record.sessionToken}</td> 
-      <td> 
-        <div class="w3-container">
-          <button onclick="editRecord(${record.accountId})">Edit</button> 
-          <p><button onclick="deleteRecord(${record.accountId})" class="w3-btn w3-orange w3-xlarge"><i class="w3-margin-left glyphicon glyphicon-trash"></i></button></p>
-        </div>
-      </td> 
+          <td contenteditable="false">${record[0]}</td> 
+          <td contenteditable="true">${record[1]}</td> 
+          <td contenteditable="true">${record[2]}</td> 
+          <td contenteditable="false">${record[3]}</td> 
+          <td contenteditable="true">${record[4]}</td> 
+          <td contenteditable="true">${record[5]}</td> 
+          <td contenteditable="true">${record[6]}</td> 
+          <td> 
+            <p><button onclick="saveChanges(${record[0]})" id = "save"><i class="glyphicon glyphicon-floppy-saved"></i></button></p>
+              
+              <p><button onclick="deleteRecord(${record[0]})" id = "trash"><i class="w3-margin-left glyphicon glyphicon-trash"></i></button></p>
+              
+          </td> 
     `;
-
-          
-
 
           tableBody.appendChild(row);
         }
 
         updatePagination();
       }
+
+      function saveChanges(accountId) {
+        var record = database.find(function (record) {
+          return record[0] === accountId;
+        });
+        console.log(record)
+        if (record) {
+          var row = document.getElementById(record[0])
+          console.log(row)
+          var cells = row.children;
+
+          record[0] = parseInt(cells[0].textContent);
+          record[1] = cells[1].textContent;
+          record[2] = cells[2].textContent;
+          record[3] = cells[3].textContent;
+          record[4] = cells[4].textContent;
+          record[5] = cells[5].textContent;
+          record[6] = cells[6].textContent;
+          
+          fetch('/update_database?type=edit&database=account', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ record: record })
+          })
+            .then(response => {
+              if (response.ok) {
+                // Handle successful response
+                console.log('Data updated successfully');
+                displayDatabase();
+              } else {
+                // Handle error response
+                console.error('Error updating data');
+              }
+            })
+            .catch(error => {
+              // Handle network error
+              console.error('Network error', error);
+            });
+        }
+          displayDatabase();
+        }
+      
 
       function updatePagination() {
         var currentPageElement = document.getElementById("currentPage");
@@ -280,146 +276,55 @@
         var usernameInput = document.getElementById("usernameInput");
         var passwordInput = document.getElementById("passwordInput");
         // Add inputs for the new fields
-        var creationDateInput = document.getElementById("creationDateInput");
         var permissionLevelInput = document.getElementById(
           "permissionLevelInput"
         );
         var accountTypeInput = document.getElementById("accountTypeInput");
-        var sessionTokenInput = document.getElementById("sessionTokenInput");
 
         if (
           usernameInput.value === "" ||
           passwordInput.value === "" ||
           creationDateInput.value === "" ||
-          permissionLevelInput.value === "" ||
-          accountTypeInput.value === "" ||
-          sessionTokenInput.value === ""
+          permissionLevelInput.value === "None" ||
+          accountTypeInput.value === "" 
         ) {
           alert("Fill in all the fields!");
           return;
         }
-
-        var newRecord = {
-          accountId: database.length + 1, // Generate a new unique ID
-          username: usernameInput.value,
-          password: passwordInput.value,
-          creationDate: creationDateInput.value,
-          permissionLevel: permissionLevelInput.value,
-          accountType: accountTypeInput.value,
-          sessionToken: sessionTokenInput.value,
-        };
+        var newRecord = [
+          database.length + 1, // Generate a new unique ID
+          usernameInput.value,
+          passwordInput.value,
+          new Date().toISOString().split("T")[0],
+          permissionLevelInput.value,
+          accountTypeInput.value,
+          "",
+      ];
 
         database.push(newRecord);
         usernameInput.value = "";
         passwordInput.value = "";
-        creationDateInput.value = "";
-        permissionLevelInput.value = "";
+        permissionLevelInput.value = "Select Permission Level";
         accountTypeInput.value = "";
-        sessionTokenInput.value = "";
 
         displayDatabase();
       }
 
       function showAddForm() {
         var addForm = document.getElementById("addForm");
+        
         addForm.style.display = "";
+        addForm.scrollIntoView({ behavior: 'smooth' });
       }
 
       function deleteRecord(accountId) {
         var index = database.findIndex(function (record) {
-          return record.accountId === accountId;
+          return record[0] === accountId;
         });
 
         if (index !== -1) {
           database.splice(index, 1);
           displayDatabase();
-        }
-      }
-
-      function editRecord(accountId) {
-        var record = database.find(function (record) {
-          return record.accountId === accountId;
-        });
-        if (record) {
-          var editUsernameInput = document.getElementById("editUsernameInput");
-          var editPasswordInput = document.getElementById("editPasswordInput");
-          var editCreationDateInput = document.getElementById(
-            "editCreationDateInput"
-          );
-          var editPermissionLevelInput = document.getElementById(
-            "editPermissionLevelInput"
-          );
-          var editAccountTypeInput = document.getElementById(
-            "editAccountTypeInput"
-          );
-          var editSessionTokenInput = document.getElementById(
-            "editSessionTokenInput"
-          );
-
-          editUsernameInput.value = record.username;
-          editPasswordInput.value = record.password;
-          editCreationDateInput.value = record.creationDate;
-          editPermissionLevelInput.value = record.permissionLevel;
-          editAccountTypeInput.value = record.accountType;
-          editSessionTokenInput.value = record.sessionToken;
-
-          var editForm = document.getElementById("editForm");
-          editForm.style.display = "";
-
-          var updateButton = document.getElementById("updateButton");
-          updateButton.onclick = function () {
-            console.log("yes");
-            var editForm = document.getElementById("editForm");
-            editForm.style.display = "none";
-            updateRecord(accountId);
-          };
-        }
-      }
-      function cancelEdit() {
-        var editForm = document.getElementById("editForm");
-        editForm.style.display = "none";
-      }
-      function updateRecord(accountId) {
-        var record = database.find(function (record) {
-          return record.accountId === accountId;
-        });
-
-        if (record) {
-          var usernameInput = document.getElementById("editUsernameInput");
-          var passwordInput = document.getElementById("editPasswordInput");
-          var creationDateInput = document.getElementById(
-            "editCreationDateInput"
-          );
-          var permissionLevelInput = document.getElementById(
-            "editPermissionLevelInput"
-          );
-          var accountTypeInput = document.getElementById(
-            "editAccountTypeInput"
-          );
-          var sessionTokenInput = document.getElementById(
-            "editSessionTokenInput"
-          );
-          console.log(usernameInput.value);
-          record.username = usernameInput.value;
-          record.password = passwordInput.value;
-          record.creationDate = creationDateInput.value;
-          record.permissionLevel = permissionLevelInput.value;
-          record.accountType = accountTypeInput.value;
-          record.sessionToken = sessionTokenInput.value;
-
-          displayDatabase();
-
-          // Reset the form and button
-          usernameInput.value = "";
-          passwordInput.value = "";
-          creationDateInput.value = "";
-          permissionLevelInput.value = "";
-          accountTypeInput.value = "";
-          sessionTokenInput.value = "";
-
-          var addButton = document.getElementById("addButton");
-          addButton.innerHTML = "Add";
-          addButton.onclick = addRecord;
         }
       }
 
@@ -442,14 +347,12 @@
 
         var addButton = document.getElementById("addButton");
         addButton.innerHTML = "Add";
-        addButton.onclick = addRecord;
 
         var addForm = document.getElementById("addForm");
         addForm.style.display = "none";
       }
 
-      // Initial display of the database
-      displayDatabase();
+      
     </script>
   </body>
 </html>

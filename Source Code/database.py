@@ -4,7 +4,7 @@ from customer import Customer
 import random
 import datetime
 from account import Account
-
+from bcrypt import hashpw, gensalt
 
 class Database():
     def __init__(self) -> None:
@@ -205,3 +205,22 @@ class Database():
             return False
         else:
             return account
+
+    def get_account_database(self) -> dict:
+        connection = sqlite3.connect("database.db")
+        cursor = connection.execute("SELECT * from ACCOUNT")
+        return cursor.fetchall()
+    
+    def update_account_from_id(self, record: dict) -> bool:
+        try:
+            connection = sqlite3.connect("database.db")
+            if not ("$2b$12$" in record[2]):
+                record[2] = hashpw(record[2].encode(), gensalt()).decode()
+            cursor = connection.execute("UPDATE ACCOUNT SET USERNAME=?, PASSWORD=?, CREATIONDATE=?, PERMISSIONLEVEL=?, ACCOUNTTYPE=?, SESSION_TOKEN=? WHERE ACCOUNTID=?", (record[1], record[2], record[3], record[4], record[5], record[6], record[0]))
+            connection.commit()
+            connection.close()
+            return True
+        except Exception as e:
+            print("Fatal error D:")
+            print(e)
+            return False

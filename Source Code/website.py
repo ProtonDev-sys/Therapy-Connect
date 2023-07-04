@@ -48,6 +48,10 @@ class Website():
                               self.get_profile, methods=['GET'])
         self.app.add_url_rule(
             "/admin", "admin", self.admin_page, methods=['GET'])
+        self.app.add_url_rule(
+            "/get_database", "get_database", self.get_database, methods=['GET'])
+        self.app.add_url_rule(
+            "/update_database", "update_database", self.update_database, methods=['POST'])
         self.app.register_error_handler(404, self.handle_404)
 
         # self.app.add_url_rule("/favicon.ico", "/favicon.ico", self.favicon, methods=['GET'])
@@ -59,8 +63,63 @@ class Website():
     #    return send_from_directory(os.path.join(app.root_path, 'static'),
     #                           'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+    def is_admin(self, request) -> bool:
+        session_token = request.cookies.get("SESSION-TOKEN")
+        if not session_token:
+            return False,"",
+        account = Account()
+        id = None
+        if request.args.get('username'):
+            username = request.args.get('username')
+        elif request.args.get('id'):
+            id = request.args.get('id')
+        else:
+            username = request.cookies.get("USERNAME")
+
+        account.username = request.cookies.get("USERNAME")
+        valid = account.set_session_token(session_token)
+        if not valid:
+            return False,"",
+        print(self.database.get_account_by_username(username))
+        if int(self.database.get_account_by_username(username)[4]) == 1:
+            return True,valid,
+
+
+    def get_database(self) -> dict:
+        #valid, token = self.is_admin(request)
+        #print(token )
+        valid = True
+        token = "admin-testing"
+        if not valid:
+            response = make_response(jsonify([["nice", "try", "you", "are", "not", "admin", "get out bozo"]]))
+            return response 
+        else:
+            response = make_response(jsonify(self.database.get_account_database()))
+            response.set_cookie("SESSION-TOKEN", token)
+        return response
+    
+    def update_database(self) -> dict:
+        #valid, token = self.is_admin(request)  
+        #print(valid, token)
+        valid = True
+        token = "admin-testing"
+        if not valid:
+            response = make_response(jsonify(["go away."]))
+            response.set_cookie("SESSION-TOKEN", token)
+            return response 
+        else:
+            request_type = request.args.get('type')
+            database = request.args.get('database')
+            if database == "account" and request_type == "edit":
+                record = request.get_json()['record']
+                self.database.update_account_from_id(record)
+                response = make_response(jsonify([True]))
+                response.set_cookie("SESSION-TOKEN", token)
+                return response
+
     def index(self) -> dict:
         session_token = request.cookies.get("SESSION-TOKEN")
+        
         if not session_token:
             return redirect(url_for('Login'))
         account = Account()
@@ -215,33 +274,33 @@ class Website():
         if not valid:
             return redirect(url_for('Login'))
         if not id:
-            profileAccount = self.database.get_account_by_username(username)
+            profile_account = self.database.get_account_by_username(username)
         else:
-            profileAccount = self.database.get_account_by_id(id)
+            profile_account = self.database.get_account_by_id(id)
 
-        if not profileAccount:
+        if not profile_account:
             response = jsonify({"error": "Account does not exist."})
             response.set_cookie("SESSION-TOKEN", value=valid, max_age=1200)
             return response
 
-        if profileAccount[5] == "therapist":
-            otherDatabase = self.database.get_therapist_by_account_id(
-                profileAccount[0])
+        if profile_account[5] == "therapist":
+            other_database = self.database.get_therapist_by_account_id(
+                profile_account[0])
             response = make_response(render_template('profile.html', user={
-                "username": profileAccount[1],
-                "creation_date": profileAccount[3],
-                "type": profileAccount[5],
-                "name": otherDatabase.name,
-                "speciality": otherDatabase.speciality,
+                "username": profile_account[1],
+                "creation_date": profile_account[3],
+                "type": profile_account[5],
+                "name": other_database.name,
+                "speciality": other_database.speciality,
             }))
         else:
-            otherDatabase = self.database.get_customer_by_account_id(
-                profileAccount[0])
+            other_database = self.database.get_customer_by_account_id(
+                profile_account[0])
             response = make_response(render_template('profile.html', user={
-                "username": profileAccount[1],
-                "creation_date": profileAccount[3],
-                "type": profileAccount[5],
-                "name": otherDatabase.name,
+                "username": profile_account[1],
+                "creation_date": profile_account[3],
+                "type": profile_account[5],
+                "name": other_database.name,
                 "speciality": "Customer",
             }))
         response.set_cookie("SESSION-TOKEN", value=valid, max_age=1200)
